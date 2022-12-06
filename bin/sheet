@@ -1,0 +1,29 @@
+#!/bin/bash
+dpi=300
+inches() {
+  echo $(bc <<< "$dpi * $1 / 1")
+}
+width=$(inches 11)
+height=$(inches 8.5)
+
+pages=()
+while read page; do
+  card=$(echo $page | cut -d'|' -f1)
+  [ -z "$card" ] || page_arg+="-page +$(inches 0.875)+$(inches 0.5) $card "
+  card=$(echo $page | cut -d'|' -f2)
+  [ -z "$card" ] || page_arg+="-page +$(inches 4.25)+$(inches 0.5) $card "
+  card=$(echo $page | cut -d'|' -f3)
+  [ -z "$card" ] || page_arg+="-page +$(inches 7.625)+$(inches 0.5) $card "
+  card=$(echo $page | cut -d'|' -f4)
+  [ -z "$card" ] || page_arg+="-page +$(inches 0.875)+$(inches 4.5) $card "
+  card=$(echo $page | cut -d'|' -f5)
+  [ -z "$card" ] || page_arg+="-page +$(inches 4.25)+$(inches 4.5) $card "
+  card=$(echo $page | cut -d'|' -f6)
+  [ -z "$card" ] || page_arg+="-page +$(inches 7.625)+$(inches 4.5) $card "
+  out=$(mktemp).png
+  cmd="convert -size ""$width""x""$height"" xc:white $page_arg -layers flatten $out"
+  eval $cmd
+  pages+=($out)
+done < <(cat | paste -d'|' - - - - - -)
+
+convert ${pages[@]} out.pdf
