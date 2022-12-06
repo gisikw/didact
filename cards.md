@@ -1,5 +1,7 @@
-# Ring of Djinni Summoning
-Ring, legendary (requires attunement)
+---
+title: Ring of Djinni Summoning
+subtitle: Ring, legendary (requires attunement)
+---
 
 While wearing this ring, you can speak its command word as an action to summon a particular djinni from the Elemental Plane of Air. The djinni appears in an unoccupied space you choose within 120 feet of you. It remains as long as you concentrate (as if concentrating on a spell), to a maximum of 1 hour, or until it drops to 0 hit points. It then returns to its home plane.
 
@@ -7,8 +9,10 @@ While summoned, the djinni is friendly to you and your companions. It obeys any 
 
 After the djinni departs, it can’t be summoned again for 24 hours, and the ring becomes nonmagical if the djinni dies.
 
-# Magic Missile
-1st-level evocation
+---
+title: Magic Missile
+subtitle: 1st-level evocation
+---
 
 | Casting Time | 1 action      |
 | Range        | 120 feet      |
@@ -19,8 +23,10 @@ You create three glowing darts of magical force. Each dart hits a creature of yo
 
 **At Higher Levels:** When you cast this spell using a spell slot of 2nd level or higher, the spell creates one more dart for each slot level above 1st.
 
-# Bandit
-Medium humanoid (any race), any non-lawful alignment
+---
+title: Bandit
+subtitle: Medium humanoid (any race), any non-lawful alignment
+---
 
 | Armor Class | 12 |
 | Hit Points  | 11 |

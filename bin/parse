@@ -1,0 +1,36 @@
+#!/bin/bash
+dpi=300
+inches() {
+  echo $(bc <<< "$dpi * $1 / 1")
+}
+
+width=$(inches 2.5)
+height=$(inches 3.5)
+radius=$(inches 0.125)
+
+cards=()
+while read i; do
+  cards+=($i)
+done < <(grep -n "\-\-\-" $1 | awk -v FS=':' '{ print $1 }')
+cards+=($(($(wc -l $1 | awk '{ print $1 }')+1)))
+
+for ((i=0; i<=(${#cards[@]}/2+1); i+=2)); do
+  frontmatter=$(sed "$((${cards[$i]}+1)),$((${cards[$((i+1))]}-1))!d" $1)
+  title=$(echo "$frontmatter" | grep '^title:' | awk -v FS=': ' '{ print $2 }')
+  subtitle=$(echo "$frontmatter" | grep 'subtitle:' | awk -v FS=': ' '{ print $2 }')
+  body=$(sed "$((${cards[$i+1]}+1)),$((${cards[$((i+2))]}-1))!d" $1)
+
+  title_img=$(./bin/filltext $(inches 2.25)x$(inches 0.25) <<< "$title")
+  subtitle_img=$(./bin/filltext $(inches 2.25)x$(inches 0.10) <<< "<i>$subtitle</i>")
+  body_img=$(./bin/filltext $(inches 2.25)x$(inches 2.7) <<< "$body")
+
+  out=$(mktemp).png
+  convert -size "$width"x"$height" xc:transparent \
+    -fill white -stroke black -strokewidth 1 -draw "roundrectangle 2,2 $((width-4)),$((height-4)) $radius,$radius" \
+    -page +$(inches 0.125)+$(inches 0.125) $title_img \
+    -page +$(inches 0.125)+$(inches 0.40) $subtitle_img \
+    -page +$(inches 0.125)+$(inches 0.68) $body_img \
+    -layers flatten \
+    $out
+  echo $out
+done

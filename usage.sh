@@ -9,3 +9,5 @@ EOF
 )
 
 ./bin/filltext 650x500 <<< "$copy"
+
+./bin/parse cards.md
