@@ -11,3 +11,4 @@ A system for easily printing / formatting spell, item, and monster cards for D&D
 # Notes
 - Card size: 3.5" x 2.5" with 1/8" radius
 - Info in cards.md is from the 5e SRD
+- Need a version of imagemagick with +pango support; use macports

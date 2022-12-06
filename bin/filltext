@@ -1,0 +1,32 @@
+#!/bin/bash
+# TODO: Use binary search to improve performance
+
+read width height < <(awk -v FS='x' '{ print $1, $2 }' <<< $1)
+shift
+max_pointsize=48
+copy=$(cat)
+file=$(mktemp).png
+
+while getopts ":m:" opt; do
+  case $opt in
+    m)
+      max_pointsize=$OPTARG
+      ;;
+    \?)
+      echo "Invalid option -$OPTARG" >&2
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+pointsize=$max_pointsize
+while true; do
+  convert -background transparent -pointsize $pointsize -size $width pango:"$copy" $file
+  h=$(identify $file | awk '{ print $3 }' | cut -d'x' -f2)
+  [ $h -le $height ] && break
+  ((pointsize--))
+done
+echo $file
